@@ -1,0 +1,32 @@
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="admin-app">
+<template>
+  <span id="browser-sync-binding"></span>
+        <iron-pages selected="{{page}}" attr-for-selected="data-category">
+        <section data-category="login">
+          <login-card></login-card>
+        </section>
+       
+           </template>
+  
+<script>
+  Polymer({
+    is: "admin-app",
+    ready: function() 
+    {
+      this.page="login";
+    },
+  setPage:function(page)
+    {
+     this.page=page;
+    }
+  });
+  </script>
+</dom-module>

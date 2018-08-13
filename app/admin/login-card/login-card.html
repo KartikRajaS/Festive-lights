@@ -1,12 +1,12 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../login-service/login-service.html">
 <!--<link rel="stylesheet" type="text/css" href="../../styles/styles.css">-->
 <dom-module id="login-card">
@@ -50,11 +50,11 @@
     <div class="content">
         <div class="card-img">
 
-            <img src="../../images/zeesouth.png" height="100px" width="90px"></img>
+            <img src="" height="100px" width="90px"></img>
         </div>
         
          <div class="sch-name">
-               <paper-item  value="Cheque" id="schoolname">{{schname}}</paper-item>
+               
             </div>
             <div class="field">
                 <paper-input label="Username" id="username" value="{{uname}}" required auto-validate error-message="needs username!" on-change="Fncheckschool"></paper-input>
@@ -77,7 +77,7 @@
       is: "login-card",
       ready:function()
       {
-        this.$.schoolname.hidden=true;
+        
        sessionStorage.setItem("pagestatus","1");
       },
       Fnlogin:function()
@@ -95,7 +95,7 @@
       Fncheckschool:function()
       {
       this.$.loginservice.checkschool(this.uname);
-      this.$.schoolname.hidden=false;
+      
       },
       Fnenterkeylogin:function()
       {
