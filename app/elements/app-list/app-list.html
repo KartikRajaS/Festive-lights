@@ -1,0 +1,79 @@
+<script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../addattendence-card/addattendence-card.html">
+<link rel="import" href="../attendancepresent-card/attendancepresent-card.html">
+<link rel="import" href="../attendance-service/attendance-service.html">
+<link rel="stylesheet" type="text/css" href="../../styles/styles.css">
+  <dom-module id="app-list">
+  <template>
+  <style>
+  .in
+  {
+  float:right;
+  font-size:12px;
+  }
+  .backbutton
+  {
+    float:left;
+    width: 4%;
+  }
+  </style>
+
+  <div class="head">
+      <label>{{title}}</label>
+      <paper-button class="in" on-click="signout">Sign Out</paper-button>
+    </div>
+
+      <div class="content">
+        <iron-pages selected="{{page}}" attr-for-selected="data-category">
+            <section data-category="loginpage">
+              <login-card></login-card>
+            </section>
+          <section data-category="addattendence">
+            <addattendence-card></addattendence-card>
+          </section>
+          <section data-category="attendancepresent">
+            <attendancepresent-card></attendancepresent-card>
+          </section>
+          </iron-pages>
+       </div>
+       <div class="footer"></div>
+       <attendance-service id="service"></attendance-service>
+  </template>
+  <script>
+  Polymer({
+    is: "app-list",
+    ready: function() {
+   var name=sessionStorage.getItem("userinfo");
+   //alert(name);
+   if(name=="Attender")
+   {
+    this.page="addattendence";
+    this.title="Attendance";
+     this.$.service.getroute();
+    // document.querySelector('attendance-service').getroute();
+    //document.querySelector('addattendence-card').setroute();
+   }
+   var currpage=localStorage.getItem("curr_sess_page");
+  },
+  setPage:function(page,title){
+    //alert(page);
+    localStorage.setItem("curr_sess_homepage","0");
+    localStorage.setItem("curr_sess_page",page);
+    this.page=page;
+    this.title=title;
+ },
+ signout:function()
+ {
+  window.location.href="../index.html";
+ sessionStorage.setItem("userinfo",null);
+  sessionStorage.setItem("route",null);
+   //document.querySelector('app-card').setPage("loginpage");
+ },
+ 
+  });
+
+  </script>
+</dom-module>

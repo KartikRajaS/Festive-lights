@@ -1,0 +1,68 @@
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../app-list/app-list.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../login-card/login-card.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../addphoto-card/addphoto-card.html">
+
+
+<dom-module id="attendance-app">
+<template>
+  <span id="browser-sync-binding"></span>
+        <iron-pages selected="{{page}}" attr-for-selected="data-category">
+        <section data-category="loginpage">
+          <login-card></login-card>
+        </section>
+        <section data-category="applist">
+          <app-list></app-list>
+        </section>
+        
+           </iron-pages>
+            <iron-ajax
+        auto
+        id="addressajax"
+        url="../../configfile/address.json"
+        handle-as="json"
+        content-type="application/json"
+        on-response="addressResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+           </template>
+  
+<script>
+  Polymer({
+    is: "attendance-app",
+    ready: function() 
+    {
+    this.$.addressajax.generateRequest();
+     var name=sessionStorage.getItem("userinfo");
+   //alert(name);
+   if(name=="Attender")
+   {
+    //alert('dd');
+    this.page="applist";
+   }
+   else
+   {
+
+      this.page="loginpage";
+    }
+    
+  },
+  addressResponse:function(e)
+      {
+        var addr=e.detail.response.address;
+        sessionStorage.setItem("addrinfo",addr);
+        //alert(JSON.stringify(e.detail.response.address));
+      },
+  setPage:function(page)
+    {
+     this.page=page;
+    }
+  });
+  </script>
+</dom-module>
