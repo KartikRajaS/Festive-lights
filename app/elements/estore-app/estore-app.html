@@ -9,11 +9,13 @@
 <dom-module id="estore-app">
 <template>
   <span id="browser-sync-binding"></span>
+  <header-card></header-card>
         <iron-pages selected="{{page}}" attr-for-selected="data-category">
         <section data-category="homecard">
           <home-card></home-card>
         </section>
-       
+       </iron-pages>
+  <footer-card></footer-card>
            </template>
   
 <script>
