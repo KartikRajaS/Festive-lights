@@ -199,7 +199,7 @@ p.welcomeText {
 
 .testimonials {
   font-family: 'Raleway', sans-serif !important;
-  background-image: url("../../assets/Homepage/diwali-customer-bacground.png");
+  background-image: url("../images/Homepage/diwali-customer-bacground.png");
   color: #FFF;
   text-align: center;
 }
@@ -265,6 +265,7 @@ ul.review_star li {
     height: 20px;
   }
 }
+
 /*Header*/
 .menu-bar{
   padding: 0;
