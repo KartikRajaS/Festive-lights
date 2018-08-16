@@ -7,6 +7,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+
 body {
   background: #fafafa;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -56,7 +59,7 @@ p.welcomeText {
   padding-right: 0px;
 }
 .lastSec img {
-  padding-right: 10px;
+  padding-right: 8px;
 }
 .spectrumLight {
   background: #F2E5F9;
@@ -360,6 +363,26 @@ ul.nav.navbar-nav li:last-child a {
   .navbar.navbar-inverse .nav-collapse.in.slide-down {
     transform: translate(0px,0px);
   }
+
+  .about_text p {
+    font-size: 16px;
+    padding: 0 10px;
+    color: #000;
+    margin-top: 8px;
+  }
+  img{
+    max-width: 100%;
+  }
+  .client_img,.client_info {
+    width: 100%;
+    float: left;
+    margin-left: 0;
+  }
+  .space {
+    height: 20px;
+  }
+
+
 }
 .deliviery-location {
   width: 55%;
@@ -446,7 +469,7 @@ ul.nav.navbar-nav li:last-child a {
 .appMiniCart {
   width: 100%;
   float: left;
-  margin: 32px 0px;
+  margin: 10px 0px;
 }
 .search-blk input {
   height: 50px;
@@ -485,4 +508,82 @@ span.cartCount {
 .item-count {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
+}
+
+
+
+/*
+-----Footer--------
+*/
+.footer{
+  padding: 50px 0;
+  background-image: url("../images/Footer/Footer-background.jpg");
+  background-size: 100% 100%;
+}
+.footer_col {
+  width: 14.2%;
+  float: left;
+}
+
+.footer_title {
+  color: #B50148;
+  font-family: 'Raleway', sans-serif !important;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 5px 0px;
+  font-size: 15px;
+}
+.footer_col ul {
+  display: block;
+  list-style: none;
+  padding-left: 0px;
+}
+.footer_col ul li {
+  padding: 6px 0px;
+}
+.footer_col ul li a {
+  color: #000;
+  font-size: 16px;
+  text-transform: capitalize;
+  font-family: 'Raleway', sans-serif !important;
+}
+.footer_payment {
+  padding: 40px 0px;
+}
+.mail_icon {
+  width: 115px;
+  float: left;
+  text-align: center;
+}
+.reach_us {
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 16px;
+}
+.line {
+  height: 1px;
+  background-color: #FFF;
+  margin: 50px 0px;
+}
+.copyrights {
+  font-family: 'Raleway', sans-serif !important;
+  background-color: #340016;
+  color: #FFF;
+}
+.copyrights p {
+  font-size: 16px;
+  padding: 15px 0px;
+}
+ul.social_link {
+  list-style: none;
+  padding-left: 15px;
+  font-size: 16px;
+  padding-top: 10px;
+}
+ul.social_link li {
+  display: inline-block;
+  padding: 5px 8px;
+}
+.footer_col {
+  width: 50%;
+  float: left;
 }
