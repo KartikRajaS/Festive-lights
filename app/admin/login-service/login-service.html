@@ -13,20 +13,9 @@
         >
   </iron-ajax>
 
-   <iron-ajax
-        method="post"
-        id="checkschoolajax"
-        url="{{checkschoolurl}}"
-        params="{{checkschoolparam}}"
-        handle-as="json"
-        content-type="application/json"
-        on-response="checkschoolResponse"
-        debounce-duration="300"
-        >
-  </iron-ajax>
   <!--pass the user name and password for signin-->
   <iron-ajax
-        method="post"
+        method="get"
         id="loginajax"
         url="{{loginurl}}"
         params="{{loginparam}}"
@@ -36,46 +25,29 @@
         debounce-duration="300"
         >
   </iron-ajax>
+
+  <!-- get the sequence number for id generation -->
+  <iron-ajax
+        method="post"
+        id="addseqajax"
+        url="{{addsequrl}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="addseqResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
   </template>
 
   <script>
   (function() {
-    var pzone_fee="";
-       var dzone_fee="";
-       var fee="";
-       var pickpoint="";
-       var droppoint="";
-    var studid="";
-    var disid="";
-    var username="";
-    var school="";
-    var getpassword="";
+        var dashpage;
     Polymer({
       is: "login-service",
-
-     addressResponse:function(e)
-      {
+      addressResponse:function(e){
         var addr=e.detail.response.address;
         sessionStorage.setItem("addrinfo",addr);
-        //alert(JSON.stringify(e.detail.response.address));
       },
-
-       checkschool:function(uname)
-      {
-        username=uname;
-        this.checkschoolurl=sessionStorage.getItem("addrinfo")+"/checkschool-card";
-        var obj={"username":""}
-        obj.username=uname;
-        this.checkschoolparam=obj;
-        this.$.checkschoolajax.generateRequest();
-      },
-      checkschoolResponse:function(e)
-      {
-
-        var schol=e.detail.response.returnval[0].name;
-        document.querySelector('login-card').schname=schol;
-      },
-
      //fetch the username and password from logincard and pass to the loginajax
       logincheck:function(uname,pass)
       {
@@ -85,40 +57,63 @@
         obj.username=uname;
         obj.password=pass;
         this.loginparam=obj;
+        //alert(JSON.stringify(obj));
         this.$.loginajax.generateRequest();
       },
 
      //loginResponse from the loginajax
       loginResponse:function(e)
       {
+          if((e.detail.response.returnval)!=0){
+        var role=e.detail.response.returnval[0].user_name;
+        document.querySelector('admin-app').setPage("dashboard","Dashboard");
+      }
+      else{
+        alert("Please Check the Username and Password");
+      }
 
-        var role=e.detail.response.returnval[0].role_name;
-        school=e.detail.response.returnval[0].school;
-        var name=e.detail.response.returnval[0].name;
-        var address=e.detail.response.returnval[0].addr;
-        sessionStorage.setItem("sch",school);
-        sessionStorage.setItem("schoolname",name);
-        sessionStorage.setItem("schooladdr",address);
-        //alert('School ID is '+name);
-       if(role=="Attender")
-      {
-        sessionStorage.setItem("userinfo",role);
-        document.querySelector('attendance-app').setPage("applist");
-        document.querySelector('app-list').setPage("addattendence","Attendance");
-         this.$.service.getroute();
-      }
-     
-      else 
-      {
-        alert('Invalid UserName or Password');
-      }
+      },
+      getIDsequence:function(fnadd){
+        dashpage=fnadd;
+        this.addsequrl=sessionStorage.getItem("addrinfo")+"/getIDsequence";
+       
+        alert(dashpage);
+        this.$.addseqajax.generateRequest();
+      },
+      addseqResponse:function(e){
+        var newid;
+
+        if(dashpage=='supplier'){
+            var idno=e.detail.response.returnval[0].master_supplierid;
+            newid="SU"+idno;
+            document.querySelector('admin-app').setPage("suppliercard","New Supplier Details");
+            document.querySelector('supplier-card').newid=newid;
+        }else if(dashpage=='item'){
+            var idno=e.detail.response.returnval[0].master_itemid;
+            newid="IT"+idno;
+            document.querySelector('admin-app').setPage("itemcard","New Item Details");
+            document.querySelector('items-card').newid=newid;
+        }else if(dashpage=='category'){
+            var idno=e.detail.response.returnval[0].master_category;
+            newid="CA"+idno;
+            document.querySelector('admin-app').setPage("categorycard","New Category");
+            document.querySelector('category-card').newid=newid;
+        }else if(dashpage=='user'){
+            var idno=e.detail.response.returnval[0].master_userid;
+            newid="US"+idno;
+            document.querySelector('admin-app').setPage("usercard","New User Details");
+            document.querySelector('user-card').newid=newid;
+        }else if(dashpage=='staff'){
+            var idno=e.detail.response.returnval[0].master_staffid;
+            newid="ST"+idno;
+            document.querySelector('admin-app').setPage("staffcard","New Staff Details");
+            document.querySelector('staff-card').newid=newid;
+        }
+        alert(newid);
       }
 
        });
-      
-      
-      })();
+})();
   </script>
 
 </dom-module>
-

@@ -8,25 +8,50 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../elements.html">
+<link rel="import" href="../../elements/elements.html">
 <link rel="import" href="../../styles/styles.css">
 
 <dom-module id="dashboard-card">
 <template>
-  <span id="browser-sync-binding"></span>
 
-  
+
 
 
   <p>dashboard</p>
+   <paper-button raised  class="in" on-click="FnAddsupplier">Suppliers</paper-button>
+   <paper-button raised  class="in" on-click="FnAdditem">Items</paper-button>
+   <paper-button raised  class="in" on-click="FnAddcategory">Category</paper-button>
+   <paper-button raised  class="in" on-click="FnAdduser">User</paper-button>
+   <paper-button raised  class="in" on-click="FnAddstaff">Staff</paper-button>
+   <login-service id="loginservice"></login-service>
 </template>
-  
+
 <script>
   Polymer({
     is: "dashboard-card",
-    ready: function() 
+    ready: function()
     {
-   
+
+   },
+   FnAddsupplier:function(){
+   		var fnadd='supplier';
+   		 this.$.loginservice.getIDsequence(fnadd);
+   },
+   FnAdditem:function() {
+   		var fnadd='item';
+   		 this.$.loginservice.getIDsequence(fnadd);	
+   },
+   FnAddcategory:function() {
+   		var fnadd='category';
+   		 this.$.loginservice.getIDsequence(fnadd);
+   },
+   FnAdduser:function() {
+   		var fnadd='user';
+   		 this.$.loginservice.getIDsequence(fnadd);
+   },
+   FnAddstaff:function(){
+   		var fnadd='staff';
+   		 this.$.loginservice.getIDsequence(fnadd);
    }
   });
   </script>

@@ -4,31 +4,76 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-
+<link rel="import" href="../login-card/login-card.html">
+<link rel="import" href="../login-service/login-service.html">
+<link rel="import" href="../dashboard-card/dashboard-card.html">
+<link rel="import" href="../category-card/category-card.html">
+<link rel="import" href="../items-card/items-card.html">
+<link rel="import" href="../staff-card/staff-card.html">
+<link rel="import" href="../user-card/user-card.html">
+<link rel="import" href="../supplier-card/supplier-card.html">
 
 <dom-module id="admin-app">
 <template>
-  <span id="browser-sync-binding"></span>
+<div class="head" id="head" hidden={{hide}}>
+      <paper-button class="in" on-click="Fndashnav">Home</paper-button>
+      <label>{{title}}</label>
+      <paper-button class="in" on-click="Fnsignout">Sign Out</paper-button>
+    </div>
         <iron-pages selected="{{page}}" attr-for-selected="data-category">
         <section data-category="login">
           <login-card></login-card>
         </section>
-        
+
         <section data-category="dashboard">
           <dashboard-card></dashboard-card>
-        </section>       
+        </section>
+        <section data-category="categorycard">
+          <category-card></category-card>
+        </section>
+        <section data-category="itemcard">
+          <items-card></items-card>
+        </section>
+        <section data-category="staffcard">
+          <staff-card></staff-card>
+        </section>
+        <section data-category="suppliercard">
+          <supplier-card></supplier-card>
+        </section>
+        <section data-category="usercard">
+          <user-card></user-card>
+        </section>
+      </iron-pages>
 </template>
-  
+
 <script>
   Polymer({
     is: "admin-app",
-    ready: function() 
+    ready: function()
     {
       this.page="login";
+      if(this.page=="login"){
+          this.hide=true;
+      }else{
+        this.hide=false;
+      }
     },
-  setPage:function(page)
+  setPage:function(page,title)
     {
      this.page=page;
+     this.title=title;
+     if(this.page=="login"){
+          this.hide=true;
+      }else{
+        this.hide=false;
+      }
+    },
+    Fndashnav:function(){
+      document.querySelector('admin-app').setPage("dashboard","Dashboard");
+    },
+    Fnsignout:function(){
+      document.querySelector('admin-app').setPage("login");
+      sessionStorage.clear();
     }
   });
   </script>
