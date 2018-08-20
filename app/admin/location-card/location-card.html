@@ -15,22 +15,66 @@
 <template>
 
 
+<div class="content">
+Location ID : <paper-location hidden={{newlocation}}>{{newid}}</paper-location><paper-input hidden={{oldlocation}} label="Location ID" id="locationid" value="{{oldid}}" on-change="Fnsearch"></paper-input>
+<paper-button raised hidden={{oldlocation}} class="in" on-click="Fnsearch">Search</paper-button>
+<a href hidden={{newlocation}} on-click="Fnoldlocation">Existing Location</a>
+<a href hidden={{oldlocation}} on-click="Fnnewlocation">New Location</a>
 
+Location Name :  <paper-input label="location Name" id="locationname" value="{{uname}}" ></paper-input>
 
-  <p>location-card</p>
-<paper-item>{{newid}}</paper-item>
+<div class="button">
+                <paper-button raised  class="in" on-click="Fnsubmit">Submit</paper-button>
+                <paper-button raised  class="in" on-click="Fndelete">Delete</paper-button>
+            </div>
+
+</div>
 
 
    <login-service id="loginservice"></login-service>
 </template>
 
-<script>
+<script>(function() {
+  var flag;
   Polymer({
     is: "location-card",
     ready: function()
-    {
-
+    {  
+      flag='1';
+      this.newlocation=false;
+      this.oldlocation=true;
+      this.Fnclear();
+   },
+   Fnnewlocation:function()
+   {
+      flag='1';
+      this.newlocation=false;
+      this.oldlocation=true;
+      this.oldid="";
+      this.Fnclear();
+   },
+   Fnoldlocation:function()
+   {
+      flag='0';
+      this.newlocation=true;
+      this.oldlocation=false;
+      this.Fnclear();
+   },
+    Fnsubmit:function(){
+      this.$.loginservice.Fnlocacate(this.newid,this.oldid,this.uname,flag,'location');
+   },
+   Fndelete:function(){
+      this.$.loginservice.Fnlocacate(this.newid,this.oldid,this.uname,flag,'location');
+   },
+   Fnsearch:function(){
+      this.$.loginservice.Fnsearchlocacate(this.oldid);
+   },
+   Fnclear:function(){
+    this.oldid="";
+    this.locationname="";
    }
+   
   });
+  })();
   </script>
 </dom-module>

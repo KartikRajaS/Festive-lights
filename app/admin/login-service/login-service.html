@@ -103,6 +103,45 @@
         debounce-duration="300"
         >
   </iron-ajax>
+  
+  <!-- Add update or delete user -->
+  <iron-ajax
+        method="post"
+        id="newuserajax"
+        url="{{newuserurl}}"
+        params="{{newuserparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="newuserResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+
+  <!-- search the existing user details -->
+  <iron-ajax
+        method="post"
+        id="searchuserajax"
+        url="{{searchuserurl}}"
+        params="{{searchuserparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchuserResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+
+  <!-- add,update,delete lcation or category -->
+  <iron-ajax
+        method="post"
+        id="catelocalajax"
+        url="{{catelocalurl}}"
+        params="{{catelocalparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="catelocalResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
   </template>
 
   <script>
@@ -110,6 +149,7 @@
         var dashpage;
         var today=new Date();
         var idno;
+        var type;
     Polymer({
       is: "login-service",
       addressResponse:function(e){
@@ -230,7 +270,7 @@
       },
       searchsupplierResponse:function(e){
               var result=e.detail.response.returnval[0];
-              document.querySelector('admin-app').setPage("suppliercard","New Supplier Details");
+              document.querySelector('admin-app').setPage("suppliercard","Supplier Details");
               //alert(JSON.stringify(e.detail.response.returnval));
           document.querySelector('supplier-card').oldid=result.supplier_id;
           document.querySelector('supplier-card').name=result.supplier_name;
@@ -318,7 +358,84 @@
           document.querySelector('items-card').supplier=result.item_supplierid;
           document.querySelector('items-card').totalstock=result.item_total_stock;
           document.querySelector('items-card').currentstock=result.item_current_stock;
-           document.querySelector('admin-app').setPage("itemcard","New Item Details");
+           document.querySelector('admin-app').setPage("itemcard","Item Details");
+      },
+      FnAdduser:function(newid,oldid,uname,umobno,uemail,password,repassword,flag){
+        this.newuserurl=sessionStorage.getItem("addrinfo")+"/Fnnewuser";
+        var obj={"fnewid":"","foldid":"","funame":"","fumobno":"","fuemail":"","fflagg":"","fpwd":"","faddedon":"","faddedby":""}
+        obj.fnewid=newid;
+        obj.foldid=oldid;
+        obj.funame=uname;
+        obj.fumobno=umobno;
+        obj.fuemail=uemail;
+        obj.fflagg=flag;
+        obj.fpwd=password;
+        obj.faddedby=sessionStorage.getItem("userid");
+        obj.faddedon=today;
+        this.newuserparam=obj;
+        alert(JSON.stringify(obj));
+        this.$.newuserajax.generateRequest();
+      },
+      newuserResponse:function(e){
+        var result=e.detail.response.returnval;
+          if(result==0){
+            alert('Updated Successfully');
+          }else if(result==1){
+            alert('Inserted Successfully');
+            this.updateseq('master_userid');
+          }else if(result==3){
+            alert('Deleted Successfully')
+          }
+      },
+      Fnsearchuser:function(oldid){
+        this.searchuserurl=sessionStorage.getItem("addrinfo")+"/Fnsearchuser";
+        var obj={"foldid":""}
+        obj.foldid=oldid;
+        this.searchuserparam=obj;
+        alert(JSON.stringify(obj));
+        this.$.searchuserajax.generateRequest();
+      },
+      searchuserResponse:function(e){
+          var result=e.detail.response.returnval[0];
+          alert(JSON.stringify(result));
+        
+          document.querySelector('user-card').oldid=result.user_id;
+          document.querySelector('user-card').uname=result.user_name;
+          document.querySelector('user-card').umobno=result.mobile_no;
+          document.querySelector('user-card').uemail=result.email_id;
+          document.querySelector('user-card').password=result.login_pwd;
+          document.querySelector('admin-app').setPage("usercard","Item Details");
+      },
+      Fnlocacate:function(newid,oldid,locationname,flag,type){
+        type=type;
+        this.catelocalurl=sessionStorage.getItem("addrinfo")+"/Fnlocacate";
+        var obj={"fnewid":"","foldid":"","flocalname":"","fflagg":"","faddedon":"","faddedby":"","ftype":""}
+        obj.fnewid=newid;
+        obj.foldid=oldid;
+        obj.fname=locationname;
+        obj.fflagg=flag;
+        obj.ftype=type;
+        obj.faddedon=today;
+        obj.faddedby=sessionStorage.getItem("userid");
+        alert(JSON.stringify(obj));
+        this.$.catelocalajax.generateRequest();
+      },
+      catelocalResponse:function(e){
+         var result=e.detail.response.returnval;
+          if(result==0){
+            alert('Updated Successfully');
+          }else if(result==1){
+            alert('Inserted Successfully');
+              if(type=='location'){
+                this.updateseq('master_locationid');
+              }else if(type=='category'){
+                this.updateseq('master_category');
+              }
+            
+          }else if(result==3){
+            alert('Deleted Successfully')
+          }
+
       }
 
 

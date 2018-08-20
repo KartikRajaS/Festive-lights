@@ -13,25 +13,81 @@
 
 <dom-module id="user-card">
 <template>
+ 
+<div class="content">
+User ID : <paper-user hidden={{newuser}}>{{newid}}</paper-user><paper-input hidden={{olduser}} label="user ID" id="userid" value="{{oldid}}" on-change="Fnsearch"></paper-input>
+<paper-button raised hidden={{olduser}} class="in" on-click="Fnsearch">Search</paper-button>
+<a href hidden={{newuser}} on-click="Fnolduser">Existing user</a>
+<a href hidden={{olduser}} on-click="Fnnewuser">New user</a>
 
+User Name :  <paper-input label="User Name" id="username" value="{{uname}}" ></paper-input>
+User Mobile : <paper-input label="User Mobile no" id="mobile" value="{{umobno}}" ></paper-input>
+User Email ID : <paper-input label="User Email" id="email" value="{{uemail}}" ></paper-input>
+Login Password : <paper-input label="Password" id="password" value="{{password}}" ></paper-input>
+Re-enter Password : <paper-input label="Re-enter password" on-change="Fncheckpwd" id="repassword" value="{{repassword}}" ></paper-input>
+<div class="button">
+                <paper-button raised  class="in" on-click="Fnsubmit">Submit</paper-button>
+                <paper-button raised  class="in" on-click="Fndelete">Delete</paper-button>
+            </div>
 
-
-
-  <p>user-card</p>
-  <paper-item>{{newid}}</paper-item>
-
-
+</div>
 
    <login-service id="loginservice"></login-service>
 </template>
 
 <script>
+(function() {
+  var flag;
   Polymer({
     is: "user-card",
     ready: function()
-    {
+    {  
+      flag='1';
+      this.newuser=false;
+      this.olduser=true;
+      this.Fnclear();
+   },
+   Fnnewuser:function()
+   {
+      flag='1';
+      this.newuser=false;
+      this.olduser=true;
+      this.oldid="";
+      this.Fnclear();
+   },
+   Fnolduser:function()
+   {
+      flag='0';
+      this.newuser=true;
+      this.olduser=false;
+      this.Fnclear();
+   },
+   Fncheckpwd:function(){
+    if(this.repassword==this.password){
 
+    }else{
+        alert("Enter the Same Password");
+    }
+  },
+    Fnsubmit:function(){
+      this.$.loginservice.FnAdduser(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.password,this.repassword,flag);
+   },
+   Fndelete:function(){
+      this.$.loginservice.FnAdduser(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.password,this.repassword,3); 
+   },
+   Fnsearch:function(){
+      this.$.loginservice.Fnsearchuser(this.oldid);
+   },
+   Fnclear:function(){
+    this.oldid="";
+    this.uname="";
+    this.umobno="";
+    this.uemail="";
+    this.password="";
+    this.repassword="";
    }
+   
   });
+  })();
   </script>
 </dom-module>

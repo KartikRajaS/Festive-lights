@@ -14,23 +14,65 @@
 <dom-module id="category-card">
 <template>
 
+<div class="content">
+category ID : <paper-category hidden={{newcategory}}>{{newid}}</paper-category><paper-input hidden={{oldcategory}} label="category ID" id="categoryid" value="{{oldid}}" on-change="Fnsearch"></paper-input>
+<paper-button raised hidden={{oldcategory}} class="in" on-click="Fnsearch">Search</paper-button>
+<a href hidden={{newcategory}} on-click="Fnoldcategory">Existing category</a>
+<a href hidden={{oldcategory}} on-click="Fnnewcategory">New category</a>
 
+category Name :  <paper-input label="category Name" id="categoryname" value="{{uname}}" ></paper-input>
 
+<div class="button">
+                <paper-button raised  class="in" on-click="Fnsubmit">Submit</paper-button>
+                <paper-button raised  class="in" on-click="Fndelete">Delete</paper-button>
+            </div>
 
-  <p>category-card</p>
-<paper-item>{{newid}}</paper-item>
-
+</div>
 
    <login-service id="loginservice"></login-service>
 </template>
 
-<script>
+<script>(function() {
+  var flag;
   Polymer({
     is: "category-card",
     ready: function()
-    {
-
+    {  
+      flag='1';
+      this.newcategory=false;
+      this.oldcategory=true;
+      this.Fnclear();
+   },
+   Fnnewcategory:function()
+   {
+      flag='1';
+      this.newcategory=false;
+      this.oldcategory=true;
+      this.oldid="";
+      this.Fnclear();
+   },
+   Fnoldcategory:function()
+   {
+      flag='0';
+      this.newcategory=true;
+      this.oldcategory=false;
+      this.Fnclear();
+   },
+    Fnsubmit:function(){
+      this.$.loginservice.Fnlocacate(this.newid,this.oldid,this.uname,flag,'category');
+   },
+   Fndelete:function(){
+      this.$.loginservice.Fnlocacate(this.newid,this.oldid,this.uname,flag,'category');
+   },
+   Fnsearch:function(){
+      this.$.loginservice.Fnsearchlocacate(this.oldid);
+   },
+   Fnclear:function(){
+    this.oldid="";
+    this.categoryname="";
    }
+   
   });
+  })();
   </script>
 </dom-module>

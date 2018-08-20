@@ -164,6 +164,8 @@ app.post('/Fnsearchitem',  urlencodedParser,function (req, res)
 
 });
   });
+
+
 /*update the incremented sequence number*/
 app.post('/Fnnewseqno',  urlencodedParser,function (req, res)
 {
@@ -216,6 +218,143 @@ console.log(sql);
 
 });
   });
+
+
+/*add or update user in master table*/
+app.post('/Fnnewuser',  urlencodedParser,function (req, res)
+{
+      var flag=req.query.fflagg;
+      console.log(flag);
+      if(flag=='1'){
+
+           var sql="insert into master_user (user_id,user_name,mobile_no,email_id,login_pwd,active_status,added_date,added_by) values ('"+req.query.fnewid+"','"+req.query.funame+"','"+req.query.fumobno+"','"+req.query.fuemail+"','"+req.query.fpwd+"','1','"+req.query.faddedon+"','"+req.query.faddedby+"')";
+         
+      }else if(flag=='0'){
+        var sql="UPDATE `master_user` SET `user_name` = '"+req.query.funame+"', `mobile_no` = '"+req.query.fumobno+"', `email_id` = '"+req.query.fuemail+"', `login_pwd` = '"+req.query.fpwd+"', `active_status` = '1',`added_date`='"+req.query.faddedon+"', `added_by`='"+req.query.faddedby+"' WHERE `master_user`.`user_id` = '"+req.query.foldid+"' ";
+        
+      }else if(flag=='3'){
+          var sql="UPDATE `master_user` SET `active_status`='3' where user_id='"+req.query.foldid+"' or mobile_no='"+req.query.fumobno+"'";
+      }
+console.log(sql);
+       connection.query(sql,
+        function(err, rows)
+        {
+    if(!err)
+    {
+      res.status(200).json({'returnval': flag});
+    }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+
+/*search the already existing user details*/
+app.post('/Fnsearchuser',  urlencodedParser,function (req, res)
+{
+      var userid={"user_id":req.query.foldid};
+       connection.query('SELECT * from master_user where active_status="1" and ?',[userid],
+        function(err, rows)
+        {
+    if(!err)
+    {
+    if(rows.length>0)
+    {
+      res.status(200).json({'returnval': rows });
+    }
+    else {
+      {
+          res.status(200).json({'returnval': 0 });
+      }
+    }
+  }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+
+
+/*Get list of all items*/
+app.post('/Fngetitemlist',  urlencodedParser,function (req, res)
+{
+       connection.query('SELECT * from master_items where item_status="1"',
+        function(err, rows)
+        {
+    if(!err)
+    {
+    if(rows.length>0)
+    {
+      res.status(200).json({'returnval': rows });
+    }
+    else {
+      {
+          res.status(200).json({'returnval': 0 });
+      }
+    }
+  }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+
+
+/*add or update location in master table*/
+app.post('/Fnlocacate',  urlencodedParser,function (req, res)
+{
+      var flag=req.query.fflagg;
+      var type=req.query.ftype;
+      console.log(flag+'   '+type);
+      if(flag=='1'){
+              if(type=='location'){
+                 var sql="insert into master_location (location_id,location_name,location_status,added_on,added_by) values ('"+req.query.fnewid+"','"+req.query.fname+"','1','"+req.query.faddedon+"','"+req.query.faddedby+"')";     
+              }else if(type=='category'){
+                   var sql="insert into category_details (category_id,category_name,category_status,added_on,added_by) values ('"+req.query.fnewid+"','"+req.query.fname+"','1','"+req.query.faddedon+"','"+req.query.faddedby+"')";     
+              }
+           
+
+         
+      }else if(flag=='0'){
+        if(type=='location'){
+        var sql="UPDATE `master_location` SET `location_name` = '"+req.query.fname+"', `location_status` = '1',`added_on`='"+req.query.faddedon+"', `added_by`='"+req.query.faddedby+"' WHERE `master_location`.`location_id` = '"+req.query.foldid+"' ";
+        }else if(type=='location'){
+        var sql="UPDATE `category_details` SET `category_name` = '"+req.query.fname+"', `category_status` = '1',`added_on`='"+req.query.faddedon+"', `added_by`='"+req.query.faddedby+"' WHERE `category_details`.`category_id` = '"+req.query.foldid+"' ";
+        }
+
+      }else if(flag=='3'){
+        if(type=='location'){
+          var sql="UPDATE `master_location` SET `active_status`='3' where location_id='"+req.query.foldid+"'";
+        }else if(type=='location'){
+          var sql="UPDATE `category_details` SET `category_status`='3' where category_id='"+req.query.foldid+"'";
+        }
+      }
+console.log(sql);
+       connection.query(sql,
+        function(err, rows)
+        {
+    if(!err)
+    {
+      res.status(200).json({'returnval': flag});
+    }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+
 
 function setvalue(){
   console.log("calling setvalue.....");
