@@ -23,6 +23,7 @@
    <paper-button raised  class="in" on-click="FnAddcategory">Category</paper-button>
    <paper-button raised  class="in" on-click="FnAdduser">User</paper-button>
    <paper-button raised  class="in" on-click="FnAddstaff">Staff</paper-button>
+   <paper-button raised  class="in" on-click="FnAddlocal">Locality</paper-button>
    <login-service id="loginservice"></login-service>
 </template>
 
@@ -52,6 +53,10 @@
    FnAddstaff:function(){
    		var fnadd='staff';
    		 this.$.loginservice.getIDsequence(fnadd);
+   },
+   FnAddlocal:function(){
+      var fnadd='locality';
+       this.$.loginservice.getIDsequence(fnadd);
    }
   });
   </script>

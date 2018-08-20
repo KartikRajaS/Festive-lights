@@ -65,7 +65,10 @@
       loginResponse:function(e)
       {
           if((e.detail.response.returnval)!=0){
-        var role=e.detail.response.returnval[0].user_name;
+        var role=e.detail.response.returnval[0].user_id;
+        var uname=e.detail.response.returnval[0].user_name;
+        sessionStorage.setItem("userid",role);
+        sessionStorage.setItem("username",uname);
         document.querySelector('admin-app').setPage("dashboard","Dashboard");
       }
       else{
@@ -77,7 +80,7 @@
         dashpage=fnadd;
         this.addsequrl=sessionStorage.getItem("addrinfo")+"/getIDsequence";
        
-        alert(dashpage);
+       // alert(dashpage);
         this.$.addseqajax.generateRequest();
       },
       addseqResponse:function(e){
@@ -108,8 +111,13 @@
             newid="ST"+idno;
             document.querySelector('admin-app').setPage("staffcard","New Staff Details");
             document.querySelector('staff-card').newid=newid;
+        }else if(dashpage=='locality'){
+            var idno=e.detail.response.returnval[0].master_locationid;
+            newid="LO"+idno;
+            document.querySelector('admin-app').setPage("locationcard","New Location Details");
+            document.querySelector('staff-card').newid=newid;
         }
-        alert(newid);
+       // alert(newid);
       }
 
        });

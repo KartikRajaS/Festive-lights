@@ -14,23 +14,53 @@
 <dom-module id="supplier-card">
 <template>
 
-
-
-
-  <p>supplier-card</p>
-<paper-item>{{newid}}</paper-item>
+<div class="content">
+Supplier ID : <paper-item hidden={{newuser}}>{{newid}}</paper-item><paper-input hidden={{oldid}} label="Supplier ID" id="supplierid" value="{{newid}}" ></paper-input>
+<paper-button raised hidden={{olduser}} class="in" on-click="Fnsearch">Search</paper-button>
+<a href hidden={{newuser}} on-click="Fnolduser">Existing user</a>
+<a href hidden={{olduser}} on-click="Fnnewuser">New user</a>
+Supplier Name :  <paper-input label="Supplier Name" id="suppliername" value="{{name}}" ></paper-input>
+Supplier Mobile : <paper-input label="Mobile Number" id="suppliermob" value="{{mobno}}" ></paper-input>
+Supplier BrandName : <paper-input label="Brand Name" id="supplierbrand" value="{{brand}}" ></paper-input>
+Supplier Address : <paper-input label="Door No, Street" id="supplierstreet" value="{{street}}" ></paper-input>
+<paper-input label="Locality" id="supplierlocal" value="{{locality}}" ></paper-input>
+<paper-input label="City" id="suppliercity" value="{{city}}" ></paper-input>
+<paper-input label="Pincode" id="supplierpin" value="{{pin}}" ></paper-input>
+</div>
 
 
    <login-service id="loginservice"></login-service>
 </template>
 
 <script>
+(function() {
+	var flag;
   Polymer({
+  	
     is: "supplier-card",
-    ready: function()
-    {
 
+    ready: function()
+    {	 
+    	flag=1;
+    	this.newuser=false;
+   		this.olduser=true;
+   		sessionStorage.setitem("newid",this.newid);
+   },
+   Fnnewuser:function()
+   {
+   		flag=1;
+   		this.newuser=false;
+   		this.olduser=true;
+   		this.newid=sessionStorage.getitem("newid");
+   },
+   Fnolduser:function()
+   {
+   		flag=0;
+   		this.newuser=true;
+   		this.olduser=false;
+   		this.newid="";
    }
   });
+})();
   </script>
 </dom-module>
