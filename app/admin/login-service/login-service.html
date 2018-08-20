@@ -76,6 +76,33 @@
         debounce-duration="300"
         >
   </iron-ajax>
+
+  <!-- Add or update item in master table -->
+  <iron-ajax
+        method="post"
+        id="newitemajax"
+        url="{{newitemurl}}"
+        params="{{newitemparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="newitemResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+  
+
+  <!-- search the existing item details -->
+  <iron-ajax
+        method="post"
+        id="searchitemajax"
+        url="{{searchitemurl}}"
+        params="{{searchitemparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchitemResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
   </template>
 
   <script>
@@ -229,9 +256,71 @@
       },
       newseqnoResponse:function(e){
         if(e.detail.response.returnval=='success'){
+          console.log('Sequence updated');
         }
 
+      },
+      FnAddItem:function(newid,oldid,name,prodcode,descrip,slashedprice,discount,sellingprice,brandname,supplier,totalstock,currentstock,flagg){
+
+        this.newitemurl=sessionStorage.getItem("addrinfo")+"/Fnnewitem";
+        var obj={"fnewid":"","foldid":"","fname":"","fprodcode":"","fdescrip":"","fslashedprice":"","fdiscount":"","fsellingprice":"","fbrandname":"","fsupplier":"","ftotalstock":"","fcurrentstock":"","fflag":"","faddedon":"","faddedby":""}
+        obj.fnewid=newid;
+        obj.foldid=oldid;
+        obj.fname=name;
+        obj.fprodcode=prodcode;
+        obj.fdescrip=descrip;
+        obj.fslashedprice=slashedprice;
+        obj.fdiscount=discount;
+        obj.fsellingprice=sellingprice;
+        obj.fbrandname=brandname;
+        obj.fsupplier=supplier;
+        obj.ftotalstock=totalstock;
+        obj.fcurrentstock=currentstock;
+        obj.fflag=flagg;
+        obj.faddedby=sessionStorage.getItem("userid");
+        obj.faddedon=today;
+        this.newitemparam=obj;
+        alert(JSON.stringify(obj));
+        this.$.newitemajax.generateRequest();
+      },
+      newitemResponse:function(e){
+          var result=e.detail.response.returnval;
+          if(result==0){
+            alert('Updated Successfully');
+          }else if(result==1){
+            alert('Inserted Successfully');
+            this.updateseq('master_itemid');
+          }else if(result==3){
+            alert('Deleted Successfully')
+          }
+
+      },
+      Fnsearchitem:function(oldid){
+        this.searchitemurl=sessionStorage.getItem("addrinfo")+"/Fnsearchitem";
+        var obj={"foldid":""}
+        obj.foldid=oldid;
+        this.searchitemparam=obj;
+       // alert(JSON.stringify(obj));
+        this.$.searchitemajax.generateRequest();
+      },
+      searchitemResponse:function(e){
+          var result=e.detail.response.returnval[0];
+          alert(JSON.stringify(result));
+
+          document.querySelector('items-card').oldid=result.item_id;
+          document.querySelector('items-card').name=result.item_name;
+          document.querySelector('items-card').prodcode=result.item_mft_prodcode;
+          document.querySelector('items-card').descrip=result.item_description;
+          document.querySelector('items-card').slashedprice=result.item_slashed_price;
+          document.querySelector('items-card').discount=result.item_discount;
+          document.querySelector('items-card').sellingprice=result.item_sale_price;
+          document.querySelector('items-card').brandname=result.item_brandname;
+          document.querySelector('items-card').supplier=result.item_supplierid;
+          document.querySelector('items-card').totalstock=result.item_total_stock;
+          document.querySelector('items-card').currentstock=result.item_current_stock;
+           document.querySelector('admin-app').setPage("itemcard","New Item Details");
       }
+
 
        });
         

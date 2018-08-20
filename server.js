@@ -88,7 +88,7 @@ app.post('/FnsupplierAdd',  urlencodedParser,function (req, res)
       }else if(flag=='0'){
           var sql="UPDATE `master_supplier` SET `supplier_name` = '"+req.query.fname+"', `supplier_brand` = '"+req.query.fbrand+"', `supplier_mobile` = '"+req.query.fmobno+"', `supplier_mail` = '"+req.query.femail+"', `supplier_street` = '"+req.query.fstreet+"', `supplier_locality` = '"+req.query.flocality+"', `supplier_city` = '"+req.query.fcity+"', `supplier_pincode` = '"+req.query.fpin+"', `added_by` = '"+req.query.faddedby+"', `added_date`='"+req.query.faddedon+"' WHERE `master_supplier`.`supplier_id` = '"+req.query.foldid+"' ";
       }else if(flag=='3'){
-          var sql="delete from master_supplier where supplier_id='"+req.query.foldid+"' or supplier_mobile='"+req.query.fmobno+"'";
+          var sql="UPDATE `master_supplier` SET `supplier_status`='3' where supplier_id='"+req.query.foldid+"' or supplier_mobile='"+req.query.fmobno+"'";
       }
 
        connection.query(sql,
@@ -137,6 +137,34 @@ app.post('/Fnsearchsupplier',  urlencodedParser,function (req, res)
   });
 
 
+/*search the already existing item details*/
+app.post('/Fnsearchitem',  urlencodedParser,function (req, res)
+{
+      var itemid={"item_id":req.query.foldid};
+       connection.query('SELECT * from master_items where item_status="1" and ?',[itemid],
+        function(err, rows)
+        {
+    if(!err)
+    {
+    if(rows.length>0)
+    {
+      res.status(200).json({'returnval': rows });
+    }
+    else {
+      {
+          res.status(200).json({'returnval': 0 });
+      }
+    }
+  }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+/*update the incremented sequence number*/
 app.post('/Fnnewseqno',  urlencodedParser,function (req, res)
 {
        connection.query("update master_id_generate set "+req.query.fcolumn+"='"+req.query.fnewseqno+"' ",
@@ -158,6 +186,36 @@ app.post('/Fnnewseqno',  urlencodedParser,function (req, res)
   });
 
 
+/*add or update item in master table*/
+app.post('/Fnnewitem',  urlencodedParser,function (req, res)
+{
+      var flag=req.query.fflag;
+      console.log(flag);
+      if(flag=='1'){
+           var sql="insert into master_items (item_id,item_mft_prodcode,item_name,item_description,item_slashed_price,item_discount,item_sale_price,item_brandname,item_supplierid,item_total_stock,item_current_stock,item_status,added_date,added_by) values ('"+req.query.fnewid+"','"+req.query.fprodcode+"','"+req.query.fname+"','"+req.query.fdescrip+"','"+req.query.fslashedprice+"','"+req.query.fdiscount+"','"+req.query.fsellingprice+"','"+req.query.fbrandname+"','"+req.query.fsupplier+"','"+req.query.ftotalstock+"','"+req.query.fcurrentstock+"','1','"+req.query.faddedon+"','"+req.query.faddedby+"')";
+         
+      }else if(flag=='0'){
+        var sql="UPDATE `master_items` SET `item_mft_prodcode` = '"+req.query.fprodcode+"', `item_name` = '"+req.query.fname+"', `item_description` = '"+req.query.fdescrip+"', `item_slashed_price` = '"+req.query.fslashedprice+"', `item_discount` = '"+req.query.fdiscount+"', `item_sale_price` = '"+req.query.fsellingprice+"', `item_brandname` = '"+req.query.fbrandname+"', `item_status` = '1', `item_supplierid`='"+req.query.fsupplier+"', `item_total_stock`='"+req.query.ftotalstock+"', `item_current_stock`='"+req.query.fcurrentstock+"' ,`added_date`='"+req.query.faddedon+"', `added_by`='"+req.query.faddedby+"' WHERE `master_items`.`item_id` = '"+req.query.foldid+"' ";
+        
+      }else if(flag=='3'){
+          var sql="UPDATE `master_items` SET `item_status`='3' where item_id='"+req.query.foldid+"' or item_mft_prodcode='"+req.query.fprodcode+"'";
+      }
+console.log(sql);
+       connection.query(sql,
+        function(err, rows)
+        {
+    if(!err)
+    {
+      res.status(200).json({'returnval': flag});
+    }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
 
 function setvalue(){
   console.log("calling setvalue.....");

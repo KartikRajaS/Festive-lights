@@ -13,24 +13,117 @@
 
 <dom-module id="items-card">
 <template>
+<div class="content">
+Item ID : <paper-item hidden={{newitem}}>{{newid}}</paper-item><paper-input hidden={{olditem}} label="Item ID" id="itemid" value="{{oldid}}" on-change="Fnsearch"></paper-input>
+<paper-button raised hidden={{olditem}} class="in" on-click="Fnsearch">Search</paper-button>
+<a href hidden={{newitem}} on-click="Fnolditem">Existing item</a>
+<a href hidden={{olditem}} on-click="Fnnewitem">New item</a>
+Mfg Prod Code :  <paper-input label="Mfg Product Code" id="Itemname" value="{{prodcode}}" ></paper-input>
+Item Name :  <paper-input label="Item Name" id="Itemname" value="{{name}}" ></paper-input>
+Item Description : <paper-input label="Item Description" id="Itemdescrip" value="{{descrip}}" ></paper-input>
+Item Slashed Price : <paper-input label="Slashed Price" id="Itemslashed" value="{{slashedprice}}" ></paper-input>
+Item discount : <paper-input label="Discount percent" id="discount" value="{{discount}}" ></paper-input>
+Item Selling Price : <paper-input label="Selling price" id="sellprice" value="{{sellingprice}}" ></paper-input>
+Item Brand Name : <paper-input label="Item Brand Name" id="brandname" value="{{brandname}}" ></paper-input>
+Item Supplier ID : <paper-input label="Supplier ID" id="supplierid" value="{{supplier}}" ></paper-input>
+Total Stock : <paper-input label="Total Stock" readonly={{stockread}} id="totalstock" value="{{totalstock}}" on-change="Fncopystock"></paper-input>
+Current Stock : <paper-input label="Current Stock" readonly={{stockread}} id="currentstock" value="{{currentstock}}" ></paper-input>
+<a href hidden={{olditem}} on-click="Fnaddstock">Add More Stock</a>
+		
+<div class="button">
+                <paper-button raised  class="in" on-click="Fnsubmit">Submit</paper-button>
+                <paper-button raised  class="in" on-click="Fndelete">Delete</paper-button>
+            </div>
+</div>
+
+<paper-dialog id="calcdialog" class="dialog" modal >
+<div class="content">
+		Total Stock : <paper-item>{{totalstock}}</paper-item>
+		Current Stock : <paper-item>{{currentstock}}</paper-item>
+        <paper-input label="Add More.." id="addstock" value="{{addstock}}" on-change="Fncalcstock"></paper-input>
+        <div class="buttons">
+          <paper-button dialog-confirm>Add</paper-button>
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          </div>
+        </div>
+      </paper-dialog>
 
 
-
-
-  <p>items-card</p>
-<paper-item>{{newid}}</paper-item>
 
 
    <login-service id="loginservice"></login-service>
+
 </template>
 
 <script>
+(function() {
+	var flag;
   Polymer({
     is: "items-card",
+  
     ready: function()
-    {
-
+    {	 
+    	flag='1';
+    	this.newitem=false;
+   		this.olditem=true;
+   		this.addmore=true;
+   		this.stockread=false;
+   },
+   Fnnewitem:function()
+   {
+   		flag='1';
+   		this.newitem=false;
+   		this.olditem=true;
+   		//this.newid=sessionStorage.getItem("newid");
+   		this.oldid="";
+   		this.stockread=false;
+   		this.Fnclear();
+   		//alert(flag);
+   },
+   Fnolditem:function()
+   {
+   	sessionStorage.setItem("newid",this.newid);
+   		flag='0';
+   		this.newitem=true;
+   		this.olditem=false;
+   		this.stockread=true;
+   		//this.newid="";
+   		this.Fnclear();
+   		//alert(flag);
+   },
+   Fnsubmit:function(){
+   		this.$.loginservice.FnAddItem(this.newid,this.oldid,this.name,this.prodcode,this.descrip,this.slashedprice,this.discount,this.sellingprice,this.brandname,this.supplier,this.totalstock,this.currentstock,flag);
+   },
+   Fndelete:function(){
+   		this.$.loginservice.FnAddItem(this.newid,this.oldid,this.name,this.prodcode,this.descrip,this.slashedprice,this.discount,this.sellingprice,this.brandname,this.supplier,this.totalstock,this.currentstock,3);	
+   },
+   Fnsearch:function(){
+   		this.$.loginservice.Fnsearchitem(this.oldid);
+   },
+   Fncopystock:function(){
+   		this.currentstock=this.totalstock;
+   },
+   Fnaddstock:function(){
+   		this.$.calcdialog.toggle();
+   		this.addstock=0;
+   },
+   Fncalcstock:function(){
+   		this.totalstock=parseInt(this.totalstock)+parseInt(this.addstock);
+   		this.currentstock=parseInt(this.currentstock)+parseInt(this.addstock);
+   },
+   Fnclear:function(){
+   		this.name="";
+   		this.prodcode="";
+   		this.descrip="";
+   		this.slashedprice="";
+   		this.discount="";
+   		this.sellingprice="";
+   		this.brandname="";
+   		this.supplier="";
+   		this.totalstock="";
+   		this.currentstock="";
    }
   });
+  })();
   </script>
 </dom-module>
