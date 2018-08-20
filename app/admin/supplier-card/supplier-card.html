@@ -15,17 +15,22 @@
 <template>
 
 <div class="content">
-Supplier ID : <paper-item hidden={{newuser}}>{{newid}}</paper-item><paper-input hidden={{oldid}} label="Supplier ID" id="supplierid" value="{{newid}}" ></paper-input>
+Supplier ID : <paper-item hidden={{newuser}}>{{newid}}</paper-item><paper-input hidden={{olduser}} label="Supplier ID" id="supplierid" value="{{oldid}}" ></paper-input>
 <paper-button raised hidden={{olduser}} class="in" on-click="Fnsearch">Search</paper-button>
 <a href hidden={{newuser}} on-click="Fnolduser">Existing user</a>
 <a href hidden={{olduser}} on-click="Fnnewuser">New user</a>
 Supplier Name :  <paper-input label="Supplier Name" id="suppliername" value="{{name}}" ></paper-input>
 Supplier Mobile : <paper-input label="Mobile Number" id="suppliermob" value="{{mobno}}" ></paper-input>
+Supplier Mail-ID : <paper-input label="Emaild ID" id="suppliermail" value="{{email}}" ></paper-input>
 Supplier BrandName : <paper-input label="Brand Name" id="supplierbrand" value="{{brand}}" ></paper-input>
 Supplier Address : <paper-input label="Door No, Street" id="supplierstreet" value="{{street}}" ></paper-input>
 <paper-input label="Locality" id="supplierlocal" value="{{locality}}" ></paper-input>
 <paper-input label="City" id="suppliercity" value="{{city}}" ></paper-input>
 <paper-input label="Pincode" id="supplierpin" value="{{pin}}" ></paper-input>
+<div class="button">
+                <paper-button raised  class="in" on-click="Fnsubmit">Submit</paper-button>
+                <paper-button raised  class="in" on-click="Fndelete">Delete</paper-button>
+            </div>
 </div>
 
 
@@ -41,24 +46,50 @@ Supplier Address : <paper-input label="Door No, Street" id="supplierstreet" valu
 
     ready: function()
     {	 
-    	flag=1;
+    	flag='1';
     	this.newuser=false;
    		this.olduser=true;
-   		sessionStorage.setitem("newid",this.newid);
    },
    Fnnewuser:function()
    {
-   		flag=1;
+   		flag='1';
    		this.newuser=false;
    		this.olduser=true;
-   		this.newid=sessionStorage.getitem("newid");
+   		//this.newid=sessionStorage.getItem("newid");
+   		this.oldid="";
+   		this.Fnclear();
+   		//alert(flag);
    },
    Fnolduser:function()
    {
-   		flag=0;
+   	sessionStorage.setItem("newid",this.newid);
+   		flag='0';
    		this.newuser=true;
    		this.olduser=false;
-   		this.newid="";
+   		//this.newid="";
+   		this.Fnclear();
+   		//alert(flag);
+   },
+   Fnsubmit:function(){
+   		this.$.loginservice.Fnsupplierdetails(this.newid,this.oldid,this.name,this.mobno,this.email,this.brand,this.street,this.locality,this.city,this.pin,flag);
+   },
+   Fndelete:function(){
+   		this.$.loginservice.Fnsupplierdetails(this.newid,this.oldid,this.name,this.mobno,this.email,this.brand,this.street,this.locality,this.city,this.pin,3);
+   },
+   Fnsearch:function(){
+   		this.$.loginservice.Fnsearchsupplier(this.oldid);
+   },
+   Fnclear:function(){
+   		this.oldid="";
+   		this.name="";
+   		this.mobno="";
+   		this.email="";
+   		this.brand="";
+   		this.street="";
+   		this.locality="";
+   		this.city="";
+   		this.pin="";
+   		
    }
   });
 })();

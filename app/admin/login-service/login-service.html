@@ -37,11 +37,52 @@
         debounce-duration="300"
         >
   </iron-ajax>
+
+  <!-- add or update supplier details  -->
+  <iron-ajax
+        method="post"
+        id="addsupplierajax"
+        url="{{addsupplierurl}}"
+        params="{{addsupplierparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="addsupplierResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+
+  <!-- search the already exit supplier -->
+  <iron-ajax
+        method="post"
+        id="searchsupplierajax"
+        url="{{searchsupplierurl}}"
+        params="{{searchsupplierparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchsupplierResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+
+  <!-- update new seq no in master table -->
+  <iron-ajax
+        method="post"
+        id="newseqnoajax"
+        url="{{newseqnourl}}"
+        params="{{newseqnoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="newseqnoResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
   </template>
 
   <script>
   (function() {
         var dashpage;
+        var today=new Date();
+        var idno;
     Polymer({
       is: "login-service",
       addressResponse:function(e){
@@ -67,6 +108,7 @@
           if((e.detail.response.returnval)!=0){
         var role=e.detail.response.returnval[0].user_id;
         var uname=e.detail.response.returnval[0].user_name;
+        //alert(role+'    '+uname);
         sessionStorage.setItem("userid",role);
         sessionStorage.setItem("username",uname);
         document.querySelector('admin-app').setPage("dashboard","Dashboard");
@@ -87,40 +129,112 @@
         var newid;
 
         if(dashpage=='supplier'){
-            var idno=e.detail.response.returnval[0].master_supplierid;
+            idno=e.detail.response.returnval[0].master_supplierid;
             newid="SU"+idno;
             document.querySelector('admin-app').setPage("suppliercard","New Supplier Details");
             document.querySelector('supplier-card').newid=newid;
         }else if(dashpage=='item'){
-            var idno=e.detail.response.returnval[0].master_itemid;
+             idno=e.detail.response.returnval[0].master_itemid;
             newid="IT"+idno;
             document.querySelector('admin-app').setPage("itemcard","New Item Details");
             document.querySelector('items-card').newid=newid;
         }else if(dashpage=='category'){
-            var idno=e.detail.response.returnval[0].master_category;
+             idno=e.detail.response.returnval[0].master_category;
             newid="CA"+idno;
             document.querySelector('admin-app').setPage("categorycard","New Category");
             document.querySelector('category-card').newid=newid;
         }else if(dashpage=='user'){
-            var idno=e.detail.response.returnval[0].master_userid;
+             idno=e.detail.response.returnval[0].master_userid;
             newid="US"+idno;
             document.querySelector('admin-app').setPage("usercard","New User Details");
             document.querySelector('user-card').newid=newid;
         }else if(dashpage=='staff'){
-            var idno=e.detail.response.returnval[0].master_staffid;
+             idno=e.detail.response.returnval[0].master_staffid;
             newid="ST"+idno;
             document.querySelector('admin-app').setPage("staffcard","New Staff Details");
             document.querySelector('staff-card').newid=newid;
         }else if(dashpage=='locality'){
-            var idno=e.detail.response.returnval[0].master_locationid;
+             idno=e.detail.response.returnval[0].master_locationid;
             newid="LO"+idno;
             document.querySelector('admin-app').setPage("locationcard","New Location Details");
-            document.querySelector('staff-card').newid=newid;
+            document.querySelector('location-card').newid=newid;
         }
-       // alert(newid);
+        //alert(newid);
+      },
+      Fnsupplierdetails:function(newid,oldid,name,mobno,email,brand,street,locality,city,pin,flag){
+        this.addsupplierurl=sessionStorage.getItem("addrinfo")+"/FnsupplierAdd";
+        var obj={"fnewid":"","foldid":"","fname":"","fmobno":"","femail":"","fbrand":"","fstreet":"","flocality":"","fcity":"","fpin":"","fflag":"","faddedby":"","faddedon":""}
+        obj.fnewid=newid;
+        obj.foldid=oldid;
+        obj.fname=name;
+        obj.fmobno=mobno;
+        obj.femail=email;
+        obj.fbrand=brand;
+        obj.fstreet=street;
+        obj.flocality=locality;
+        obj.fcity=city;
+        obj.fpin=pin;
+        obj.fflag=flag;
+        obj.faddedby=sessionStorage.getItem("userid");
+        obj.faddedon=today;
+        this.addsupplierparam=obj;
+        //alert(JSON.stringify(obj));
+        this.$.addsupplierajax.generateRequest();
+      },
+      addsupplierResponse:function(e){
+          var result=e.detail.response.returnval;
+          if(result==0){
+            alert('Updated Successfully');
+          }else if(result==1){
+            alert('Inserted Successfully');
+            this.updateseq('master_supplierid');
+          }else if(result==3){
+            alert('Deleted Successfully')
+          }
+
+      },
+      Fnsearchsupplier:function(oldid){
+        this.searchsupplierurl=sessionStorage.getItem("addrinfo")+"/Fnsearchsupplier";
+        var obj={"foldid":""}
+        obj.foldid=oldid;
+        this.searchsupplierparam=obj;
+       // alert(JSON.stringify(obj));
+        this.$.searchsupplierajax.generateRequest();
+      },
+      searchsupplierResponse:function(e){
+              var result=e.detail.response.returnval[0];
+              document.querySelector('admin-app').setPage("suppliercard","New Supplier Details");
+              //alert(JSON.stringify(e.detail.response.returnval));
+          document.querySelector('supplier-card').oldid=result.supplier_id;
+          document.querySelector('supplier-card').name=result.supplier_name;
+          document.querySelector('supplier-card').mobno=result.supplier_mobile;
+          document.querySelector('supplier-card').email=result.supplier_mail;
+          document.querySelector('supplier-card').brand=result.supplier_brand;
+          document.querySelector('supplier-card').street=result.supplier_street;
+          document.querySelector('supplier-card').locality=result.supplier_locality;
+          document.querySelector('supplier-card').city=result.supplier_city;
+          document.querySelector('supplier-card').pin=result.supplier_pincode;
+
+      },
+      updateseq:function(column){
+        var newseq=parseInt(idno)+1;
+        this.newseqnourl=sessionStorage.getItem("addrinfo")+"/Fnnewseqno";
+        var obj={"fnewseqno":"","fcolumn":""}
+        obj.fnewseqno=newseq;
+        obj.fcolumn=column;
+        this.newseqnoparam=obj;
+       // alert(JSON.stringify(obj));
+        this.$.newseqnoajax.generateRequest();
+
+      },
+      newseqnoResponse:function(e){
+        if(e.detail.response.returnval=='success'){
+        }
+
       }
 
        });
+        
 })();
   </script>
 
