@@ -355,6 +355,39 @@ console.log(sql);
 });
   });
 
+/*search the existing location or category*/
+app.post('/Fnsearchlocacate',  urlencodedParser,function (req, res)
+{
+
+    var searchtype=req.query.fsearchtype;
+    if(searchtype=='location'){
+          var sql='SELECT * from master_location where location_status="1" and location_id="'+req.query.foldid+'"';
+        }else if(searchtype=='category'){
+          var sql='SELECT * from category_details where category_status="1" and category_id="'+req.query.foldid+'"';
+        }
+       connection.query('',
+        function(err, rows)
+        {
+    if(!err)
+    {
+    if(rows.length>0)
+    {
+      res.status(200).json({'returnval': rows });
+    }
+    else {
+      {
+          res.status(200).json({'returnval': 0 });
+      }
+    }
+  }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
 
 function setvalue(){
   console.log("calling setvalue.....");

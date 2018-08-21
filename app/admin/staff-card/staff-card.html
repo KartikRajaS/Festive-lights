@@ -14,23 +14,81 @@
 <dom-module id="staff-card">
 <template>
 
+<div class="content">
+Staff ID : <paper-staff hidden={{newstaff}}>{{newid}}</paper-staff><paper-input hidden={{oldstaff}} label="staff ID" id="staffid" value="{{oldid}}" on-change="Fnsearch"></paper-input>
+<paper-button raised hidden={{oldstaff}} class="in" on-click="Fnsearch">Search</paper-button>
+<a href hidden={{newstaff}} on-click="Fnoldstaff">Existing Staff</a>
+<a href hidden={{oldstaff}} on-click="Fnnewstaff">New Staff</a>
 
+Staff Name :  <paper-input label="staff Name" id="staffname" value="{{uname}}" ></paper-input>
+Staff Mobile : <paper-input label="staff Mobile no" id="mobile" value="{{umobno}}" ></paper-input>
+Staff Email ID : <paper-input label="staff Email" id="email" value="{{uemail}}" ></paper-input>
+ID Proof Type : <paper-input label="Id Proof Type" id="prooftype" value="{{prooftype}}" ></paper-input>
+Staff Id proof : <paper-input label="staff Id Proof" id="idproof" value="{{idproof}}" ></paper-input>
+Flat No, Street name : <paper-input label="Flat No, Streetname" id="streetname" value="{{streetname}}" ></paper-input>
+Locality : <paper-input label="locality" id="Locality" value="{{locality}}" ></paper-input>
+City : <paper-input label="City" id="city" value="{{city}}" ></paper-input>
+Pincode : <paper-input label="Pincode" id="pin" value="{{pin}}" ></paper-input>
+<div class="button">
+                <paper-button raised  class="in" on-click="Fnsubmit">Submit</paper-button>
+                <paper-button raised  class="in" on-click="Fndelete">Delete</paper-button>
+            </div>
 
-
-  <p>staff-card</p>
-<paper-item>{{newid}}</paper-item>
+</div>
 
 
    <login-service id="loginservice"></login-service>
 </template>
 
 <script>
+ (function() {
+  var flag;
   Polymer({
     is: "staff-card",
     ready: function()
-    {
-
+    {  
+      flag='1';
+      this.newstaff=false;
+      this.oldstaff=true;
+      this.Fnclear();
+   },
+   Fnnewstaff:function()
+   {
+      flag='1';
+      this.newstaff=false;
+      this.oldstaff=true;
+      this.oldid="";
+      this.Fnclear();
+   },
+   Fnoldstaff:function()
+   {
+      flag='0';
+      this.newstaff=true;
+      this.oldstaff=false;
+      this.Fnclear();
+   },
+  
+    Fnsubmit:function(){
+      this.$.loginservice.FnAddstaff(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.password,this.repassword,flag);
+   },
+   Fndelete:function(){
+      this.$.loginservice.FnAddstaff(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.password,this.repassword,3); 
+   },
+   Fnsearch:function(){
+      this.$.loginservice.Fnsearchstaff(this.oldid);
+   },
+   Fnclear:function(){
+    this.oldid="";
+    this.uname="";
+    this.umobno="";
+    this.uemail="";
+    this.streetname="";
+    this.locality="";
+    this.city="";
+    this.pin="";
    }
+   
   });
+  })();
   </script>
 </dom-module>
