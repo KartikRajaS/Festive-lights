@@ -585,7 +585,10 @@ ul.social_link li {
   display: inline-block;
   padding: 5px 8px;
 }
-.footer_col {
-  width: 50%;
-  float: left;
+
+@media (max-width: 767px) {
+  .footer_col {
+    width: 50%;
+    float: left;
+  }
 }
