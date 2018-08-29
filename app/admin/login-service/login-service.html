@@ -142,6 +142,19 @@
         debounce-duration="300"
         >
   </iron-ajax>
+
+  <!-- search category or location -->
+  <iron-ajax
+        method="post"
+        id="searchlocacateajax"
+        url="{{searchlocacateurl}}"
+        params="{{searchlocacateparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchlocacateResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
   </template>
 
   <script>
@@ -150,6 +163,7 @@
         var today=new Date();
         var idno;
         var type;
+        var searchtype;
     Polymer({
       is: "login-service",
       addressResponse:function(e){
@@ -436,6 +450,28 @@
             alert('Deleted Successfully')
           }
 
+      },
+      Fnsearchlocacate:function(poldid,psearchtype){
+        searchtype=psearchtype;
+        this.searchlocacateurl=sessionStorage.getItem("addrinfo")+"/Fnsearchlocacate";
+        var obj={"foldid":"","fsearchtype":""}
+        obj.foldid=oldid;
+        obj.fsearchtype=psearchtype;
+        this.searchlocacateparam=obj;
+        alert(JSON.stringify(obj));
+        this.$.searchlocacateajax.generateRequest();
+      },
+      searchlocacateResponse:function(e){
+        var resultarr=e.detail.response.returnval[0];
+        if(searchtype=='location'){
+            document.querySelector('admin-app').setPage("locationcard","Location Details");
+            document.querySelector('location-card').oldid=resultarr.location_id;
+            document.querySelector('location-card').uname=resultarr.location_name;
+        }else if(searchtype=='category'){
+            document.querySelector('admin-app').setPage("categorycard","Category Details");
+            document.querySelector('category-card').oldid=resultarr.category_id;
+            document.querySelector('category-card').uname=resultarr.category_name;
+        }
       }
 
 
