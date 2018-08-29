@@ -25,6 +25,7 @@ Staff Mobile : <paper-input label="staff Mobile no" id="mobile" value="{{umobno}
 Staff Email ID : <paper-input label="staff Email" id="email" value="{{uemail}}" ></paper-input>
 ID Proof Type : <paper-input label="Id Proof Type" id="prooftype" value="{{prooftype}}" ></paper-input>
 Staff Id proof : <paper-input label="staff Id Proof" id="idproof" value="{{idproof}}" ></paper-input>
+Staff Role :  <paper-input label="staff role" id="staffrole" value="{{urole}}" ></paper-input>
 Flat No, Street name : <paper-input label="Flat No, Streetname" id="streetname" value="{{streetname}}" ></paper-input>
 Locality : <paper-input label="locality" id="Locality" value="{{locality}}" ></paper-input>
 City : <paper-input label="City" id="city" value="{{city}}" ></paper-input>
@@ -69,19 +70,22 @@ Pincode : <paper-input label="Pincode" id="pin" value="{{pin}}" ></paper-input>
    },
   
     Fnsubmit:function(){
-      this.$.loginservice.FnAddstaff(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.password,this.repassword,flag);
+      this.$.loginservice.FnAddstaff(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.prooftype,this.idproof,this.urole,this.streetname,this.locality,this.city,this.pin,flag);
    },
    Fndelete:function(){
-      this.$.loginservice.FnAddstaff(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.password,this.repassword,3); 
+      this.$.loginservice.FnAddstaff(this.newid,this.oldid,this.uname,this.umobno,this.uemail,this.prooftype,this.idproof,this.urole,this.streetname,this.locality,this.city,this.pin,3); 
    },
    Fnsearch:function(){
       this.$.loginservice.Fnsearchstaff(this.oldid);
    },
    Fnclear:function(){
+    this.newid="";
     this.oldid="";
     this.uname="";
     this.umobno="";
     this.uemail="";
+    this.prooftype="";
+    this.idproof="";
     this.streetname="";
     this.locality="";
     this.city="";

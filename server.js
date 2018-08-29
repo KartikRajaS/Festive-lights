@@ -389,6 +389,67 @@ app.post('/Fnsearchlocacate',  urlencodedParser,function (req, res)
 });
   });
 
+/*add or update staff details in master table*/
+app.post('/Fnnewitem',  urlencodedParser,function (req, res)
+{
+      var flag=req.query.fnflag;
+      console.log(flag);
+      if(flag=='1'){
+           var sql="insert into master_staff (staff_id,staff_name,staff_mobile,staff_mail,staff_id_type,staff_id_proof,staff_role,staff_street,staff_locality,staff_city,staff_pincode,staff_status,added_date,added_by) values ('"+req.query.fnnewid+"','"+req.query.fnuname+"','"+req.query.fnumobno+"','"+req.query.fnuemail+"','"+req.query.fnprooftype+"','"+req.query.fnidproof+"','"+req.query.fnrole+"','"+req.query.fnstreetname+"','"+req.query.fnlocality+"','"+req.query.fncity+"','"+req.query.fnpin+"','1','"+req.query.fnaddedon+"','"+req.query.fnaddedby+"')";
+         
+      }else if(flag=='0'){
+        var sql="UPDATE `master_staff` SET  `staff_name` = '"+req.query.fnuname+"', `staff_mobile` = '"+req.query.fnumobno+"', `staff_mail` = '"+req.query.fnuemail+"', `staff_id_type` = '"+req.query.fnprooftype+"', `staff_id_proof` = '"+req.query.fnidproof+"', `staff_role` = '"+req.query.fnrole+"', `staff_street` = '"+req.query.fnstreetname+"', `staff_locality`='"+req.query.fnlocality+"', `staff_city`='"+req.query.fncity+"', `staff_pincode`='"+req.query.fnpin+"' , `staff_status`='1' ,`added_date`='"+req.query.fnaddedon+"', `added_by`='"+req.query.fnaddedby+"' WHERE `master_items`.`staff_id` = '"+req.query.fnoldid+"' ";
+        
+      }else if(flag=='3'){
+          var sql="UPDATE `master_staff` SET `staff_status`='3' where staff_id='"+req.query.fnoldid+"' or staff_mobile='"+req.query.fnumobno+"'";
+      }
+console.log(sql);
+       connection.query(sql,
+        function(err, rows)
+        {
+    if(!err)
+    {
+      res.status(200).json({'returnval': flag});
+    }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+
+
+/*search the already existing staff details*/
+app.post('/Fnsearchstaff',  urlencodedParser,function (req, res)
+{
+      var userid={"user_id":req.query.foldid};
+       connection.query('SELECT * from master_staff where active_status="1" and ?',[userid],
+        function(err, rows)
+        {
+    if(!err)
+    {
+    if(rows.length>0)
+    {
+      res.status(200).json({'returnval': rows });
+    }
+    else {
+      {
+          res.status(200).json({'returnval': 0 });
+      }
+    }
+  }
+    else
+    {
+      console.log(err);
+      res.status(200).json({'returnval': 'invalid'});
+    }
+
+});
+  });
+
+
 function setvalue(){
   console.log("calling setvalue.....");
 }

@@ -155,6 +155,32 @@
         debounce-duration="300"
         >
   </iron-ajax>
+
+  <!-- Add or update the Staff Details -->
+  <iron-ajax
+        method="post"
+        id="staffdetailsajax"
+        url="{{staffdetailsurl}}"
+        params="{{staffdetailsparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="staffdetailsResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
+
+  <!-- search existing staff details -->
+  <iron-ajax
+        method="post"
+        id="searchstaffajax"
+        url="{{searchstaffurl}}"
+        params="{{searchstaffparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchstaffResponse"
+        debounce-duration="300"
+        >
+  </iron-ajax>
   </template>
 
   <script>
@@ -472,6 +498,65 @@
             document.querySelector('category-card').oldid=resultarr.category_id;
             document.querySelector('category-card').uname=resultarr.category_name;
         }
+      },
+      FnAddstaff(newid,oldid,uname,umobno,uemail,prooftype,idproof,role,streetname,locality,city,pin,flag){
+              this.staffdetailsurl=sessionStorage.getItem("addrinfo")+"/Fnstaffdetails";
+              var obj={"fnnewid":"","fnoldid":"","fnuname":"","fnumobno":"","fnuemail":"","fnprooftype":"","fnidproof":"","fnrole":"","fnstreetname":"","fnlocality":"","fncity":"","fnpin":"","fnflag":"","fnaddedon":"","fnaddedby":""}
+              obj.fnnewid=newid;
+              obj.fnoldid=oldid;
+              obj.fnuname=uname;
+              obj.fnumobno=umobno;
+              obj.fnuemail=uemail;
+              obj.fnprooftype=prooftype;
+              obj.fnidproof=idproof;
+              obj.fnrole=role;
+              obj.fnstreetname=streetname;
+              obj.fnlocality=locality;
+              obj.fncity=city;
+              obj.fnpin=pin;
+              obj.fnflag=flag;
+              obj.fnaddedby=sessionStorage.getItem("userid");
+        obj.fnaddedon=today;
+              this.staffdetailsparam=obj;
+              alert(JSON.stringify(obj));
+              this.$.staffdetailsajax.generateRequest();
+      },
+      staffdetailsResponse:function(e){
+        var result=e.detail.response.returnval;
+          if(result==0){
+            alert('Updated Successfully');
+          }else if(result==1){
+            alert('Inserted Successfully');
+            this.updateseq('master_userid');
+          }else if(result==3){
+            alert('Deleted Successfully')
+          }
+        },
+
+      Fnsearchstaff:function(oldid){
+        this.searchstaffurl=sessionStorage.getItem("addrinfo")+"/Fnsearchstaff";
+        var obj={"foldid":""}
+        obj.foldid=oldid;
+        this.searchstaffparam=obj;
+       // alert(JSON.stringify(obj));
+        this.$.searchstaffajax.generateRequest();
+      },
+      searchstaffResponse:function(e){
+          var result=e.detail.response.returnval[0];
+          alert(JSON.stringify(result));
+
+          document.querySelector('staff-card').oldid=result.staff_id;
+          document.querySelector('staff-card').uname=result.staff_name;
+          document.querySelector('staff-card').umobno=result.staff_mobile;
+          document.querySelector('staff-card').uemail=result.staff_mail;
+          document.querySelector('staff-card').prooftype=result.staff_id_type;
+          document.querySelector('staff-card').idproof=result.staff_id_proof;
+          document.querySelector('staff-card').role=result.staff_role;
+          document.querySelector('staff-card').streetname=result.staff_street;
+          document.querySelector('staff-card').locality=result.staff_locality;
+          document.querySelector('staff-card').city=result.staff_city;
+          document.querySelector('staff-card').pin=result.staff_pincode;
+           document.querySelector('admin-app').setPage("staffcard","Staff Details");
       }
 
 
