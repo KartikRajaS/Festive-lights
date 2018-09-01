@@ -591,4 +591,25 @@ ul.social_link li {
     width: 50%;
     float: left;
   }
+  .search-blk {
+    margin: 5px 0;
+}
+.firstSec {
+    padding-right: 15px;
+    text-align: right;
+}
+.lastSec img {
+    width: 50%;
+    float: left;
+}
+.lastSec {
+    padding-right: 15px;
+}
+h2 {    
+    font-size: 24px !important;
+}
+.about_text {
+    position: relative;
+    margin-top: 20px;
+}
 }
