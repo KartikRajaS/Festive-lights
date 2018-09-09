@@ -1,0 +1,95 @@
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../elements/elements.html">
+<link rel="import" href="../../styles/styles.css">
+
+<dom-module id="listing-itemcard">
+<template>
+      
+        <div class="product-row">
+          <div class="product-img">
+              <img src="../../assets/Product/{{imageid}}.png" alt="" class="img-responsive"/>
+          </div>
+          <div class="product-data">
+            <div class="product_name">{{productname}} <span>{{productdescrip}}</span></div>
+            <a href="#" class="read_more">Know More</a>
+            <div class="add-to-cart-blk">
+              <div class="price-blk">
+                <div class="original-price">{{originalprice}}</div>
+                <div class="sale-price">{{sellingprice}}</div>
+              </div>
+              <div class="add-tocart-action section" style="padding-bottom:20px;">
+                <label>Qty</label>
+                <div>
+
+                  <div class="btn-minus"><span class="glyphicon glyphicon-minus"></span></div>
+                  <input value="1" />
+                  <div class="btn-plus"><span class="glyphicon glyphicon-plus"></span></div>
+                </div>
+
+                <paper-button class="btn btn-success"><span style="margin-right:20px" class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to cart</paper-button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+   <login-service id="loginservice"></login-service>
+</template>
+
+<script>
+ (function() {
+  var flag;
+  Polymer({
+    is: "listing-itemcard",
+    ready: function()
+    {  
+
+    }
+   
+  });
+  })();
+  </script>
+</dom-module>
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+//-- Click on QUANTITY
+$(".btn-minus").on("click",function(){
+var now = $(".section > div > input").val();
+if ($.isNumeric(now)){
+if (parseInt(now) -1 > 0){ now--;}
+$(".section > div > input").val(now);
+}else{
+$(".section > div > input").val("1");
+}
+})
+$(".btn-plus").on("click",function(){
+var now = $(".section > div > input").val();
+if ($.isNumeric(now)){
+$(".section > div > input").val(parseInt(now)+1);
+}else{
+$(".section > div > input").val("1");
+}
+})
+})
+
+
+
+
+</script>

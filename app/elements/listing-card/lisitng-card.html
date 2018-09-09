@@ -1,0 +1,158 @@
+
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../elements/elements.html">
+<link rel="import" href="../../styles/styles.css">
+
+<dom-module id="listing-card">
+<template>
+
+<div class="header_banner">
+  <img src="../../assets/Product/selected.jpg" alt="" class="img-responsive"/>
+</div>
+
+<div class="pagination-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="breadcrumb">
+          <li><a href="#" >Home</a></li>
+          <li><a href="#" >Sparkles</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-6">
+        <ul class="pagination pagination-sm">
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="product-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9 col-xs-12">
+
+
+       <template  is="dom-repeat" items="{{itemsarr}}" as="item">
+        <listing-itemcard imageid="{{item.item_id}}" productname="{{item.item_name}}" productdescrip="{{item.item_description}}" originalprice="{{item.item_slashedprice}}" sellingprice="{{item.item_sellingprice}}"></listing-itemcard>
+        </template>
+
+        <!-- <div class="product-row">
+          <div class="product-img">
+            <img src="../../assets/Product/Square-Green_COMPRESSED.png" alt="" class="img-responsive"/>
+          </div>
+          <div class="product-data">
+            <div class="product_name">9cm Electric Sparklers <span>10 piece per box</span></div>
+            <a href="#" class="read_more">Konw More</a>
+            <div class="add-to-cart-blk">
+              <div class="price-blk">
+                <div class="original-price">18.00</div>
+                <div class="sale-price">16.00</div>
+              </div>
+              <div class="add-tocart-action section" style="padding-bottom:20px;">
+                <div>
+                  <div class="btn-minus"><span class="glyphicon glyphicon-minus"></span></div>
+                  <input value="1" />
+                  <div class="btn-plus"><span class="glyphicon glyphicon-plus"></span></div>
+                </div>
+
+                <button class="btn btn-success"><span style="margin-right:20px" class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Add to cart</button>
+
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+
+      </div>
+      <div class="col-md-3 col-xs-12">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+   <login-service id="loginservice"></login-service>
+</template>
+
+<script>
+ (function() {
+  var flag;
+  Polymer({
+    is: "listing-card",
+    ready: function()
+    {  
+
+    }
+   
+  });
+  })();
+  </script>
+</dom-module>
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+//-- Click on QUANTITY
+$(".btn-minus").on("click",function(){
+var now = $(".section > div > input").val();
+if ($.isNumeric(now)){
+if (parseInt(now) -1 > 0){ now--;}
+$(".section > div > input").val(now);
+}else{
+$(".section > div > input").val("1");
+}
+})
+$(".btn-plus").on("click",function(){
+var now = $(".section > div > input").val();
+if ($.isNumeric(now)){
+$(".section > div > input").val(parseInt(now)+1);
+}else{
+$(".section > div > input").val("1");
+}
+})
+})
+
+
+
+/*Sticky Sidebar right catalog view page*/
+      
+            $(window).scroll(function(e) {
+
+                               var $el = $('.pagination-header');
+                   
+                    if ($(this).scrollTop() > 250) { 
+                        $(".pagination-header").addClass("header-fixed");
+                    } else if ($(this).scrollTop() < 250) {
+
+                        $(".pagination-header").removeClass("header-fixed");
+                    }
+
+
+                   
+                
+
+            });
+        
+
+</script>

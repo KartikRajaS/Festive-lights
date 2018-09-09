@@ -26,6 +26,9 @@ Item discount : <paper-input label="Discount percent" id="discount" value="{{dis
 Item Selling Price : <paper-input label="Selling price" id="sellprice" value="{{sellingprice}}" ></paper-input>
 Item Brand Name : <paper-input label="Item Brand Name" id="brandname" value="{{brandname}}" ></paper-input>
 Item Supplier ID : <paper-input label="Supplier ID" id="supplierid" value="{{supplier}}" ></paper-input>
+
+Image : <input type="file" name="image" />
+
 Total Stock : <paper-input label="Total Stock" readonly={{stockread}} id="totalstock" value="{{totalstock}}" on-change="Fncopystock"></paper-input>
 Current Stock : <paper-input label="Current Stock" readonly={{stockread}} id="currentstock" value="{{currentstock}}" ></paper-input>
 <a href hidden={{olditem}} on-click="Fnaddstock">Add More Stock</a>
