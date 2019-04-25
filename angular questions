@@ -1,0 +1,35 @@
+Decorators - 4 types 
+Directives - 3 types 
+What is emiting in angular?
+What are all the features newly added in angular 6?
+Life cycle in Angular
+What is Shared Modules
+What is Lazy loading?
+What is chunk files
+What is an Auth guard?
+What is httpClient and http?
+What is Pipe and custom pipe?
+What is map in service?
+What is promise and observable?
+What is an AOT and JIT - compilers
+Single way binding / one way binding
+How to change observable to promise/ Asynchronous to Synchronous?
+Behaviour Subjects in angular service?
+What is observable?
+How can you pass data from parent component to child component?
+Forms - Dynamic, Template, Reactive
+What is router outlet?
+Error handling
+Difference btw foreach and map and filter?
+What is provider in module.ts
+What happens if we declare a component in Two module?
+Await and Async in Angular 
+What is use of CanActivate in routing? 
+How to create a routing page in angular? 
+Animations in Angular
+What is transition in Angular 
+Angular cookies
+Use of BrowerModule, CommonModule
+What is Renderer2 
+What is - @Injectable({ providedIn: 'root' }) 
+What is - @Injectable({ providedIn: AdminModule }) 
